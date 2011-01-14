@@ -1,0 +1,208 @@
+\documentclass{book}
+	\usepackage{wrapfig}
+	\usepackage{fullpage}
+	\usepackage[T1]{fontenc}
+	\usepackage[utf8]{inputenc}
+	\usepackage{amsfonts}
+	\usepackage{amsmath, amssymb, amsthm}
+	\usepackage[polish]{babel}
+	\usepackage{latexsym}
+	\usepackage[pdftex]{graphicx}
+	\usepackage{ifthen}
+	\usepackage{ulem} % podkreślenia
+	\usepackage{icomma} % brak automatycznych spacji po przecinku -- przydatne przy polskich ułamkach
+	\usepackage[pdfborder={0 0 0},pdftitle={Automaty a logika}]{hyperref} % linki w spisie treści
+	\usepackage{eso-pic}
+	\usepackage{graphicx}
+	\usepackage{polski}
+
+	\NeedsTeXFormat{LaTeX2e}
+
+
+\title{Automaty a logika}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\geq}{\geqslant}
+
+%dla automatów:
+\newcommand{\Aa}{\mathcal A}
+\newcommand{\Bb}{\mathcal B}
+\newcommand{\Cc}{\mathcal C}
+
+%zbior
+\newcommand{\set}[1]{\{#1\}}
+
+\newcommand{\liczby}[1]{\mathbb{#1}} %taką czcionką piszę zbiór liczb
+\newcommand{\liczbyR}{\mathbb{R}}
+\newcommand{\liczbyQ}{\mathbb{Q}}
+\newcommand{\liczbyN}{\mathbb{N}}
+%\newcommand{\akapit}{$\: \: \; \;$}
+\newcommand{\kwadrat}{ $\quad \square$ \newline \vspace{4ex}}
+\newcommand{\kropka}{\cdotp}
+\newcommand{\abs}[1]{\left|#1\right|} 
+\newcommand{\kwadratd}{ \begin{flushright}
+$\quad \square$
+\end{flushright} \vspace{4ex}}
+
+
+\newcounter{zad}[section]
+\newcounter{rozw}
+
+%% theorem environments for amsthm
+
+%\theoremstyle{plain}
+\newtheorem{twierdzenie}{Twierdzenie}
+\newtheorem{lemat}[twierdzenie]{Lemat}
+\newtheorem{wniosek}[twierdzenie]{Wniosek}
+\newtheorem{fakt}[twierdzenie]{Fakt}
+\newtheorem{definicja}{Definicja}
+
+
+\newcommand{\koniec}{ $\Box$}
+ \newenvironment{dowod}[1][!*!,!]%
+ {\noindent{\bf Dowód%
+     \ifthenelse{\equal{#1}{!*!,!}}{}{%
+       \normalfont\ (#1)}\\}}%
+ {\koniec\medskip}
+
+\usepackage{comment}
+
+
+\newif\ifzrozwiazaniami
+
+%\newenvironment{zadanieenv}{{\noindent \bf \thechapter.\thezad.} \stepcounter{zad}}{\bigskip }
+\newtheorem{zadanieenv}{Zadanie}[chapter]
+%{{\noindent \bf \thechapter.\thezad.} \stepcounter{zad}}{\bigskip }
+
+\newcommand{\zadanie}[4]
+{
+	
+	\ifzrozwiazaniami  % na koncu skryptu
+  	 	\ifthenelse{\equal{#2}{}}
+		{ % jesli nie ma rozwiazania to nic
+		}
+		{ % jesli jest rozwiazanie to je wypisujemy
+			\label{rozw#2}
+			\noindent{\bf Zadanie~\ref{#2}. }#1
+	
+			\medskip
+			\noindent{\bf Rozwiązanie. } (Zapisał #3.)
+
+			\medskip
+			\noindent #4
+			\vfill \pagebreak
+		}
+	\else  % po rozdziale
+		\begin{zadanieenv}\label{#2}
+			#1
+			\ifthenelse{\equal{#2}{}}
+			{  % brak rozwiazania
+			}
+			{  % jest rozwiazanie
+				\smallskip
+				\noindent{\it Rozwiązanie na stronie \pageref{rozw#2}.}
+			}	
+		\end{zadanieenv}
+	\fi
+
+
+
+}
+\specialcomment{rozwiazanie}{\begin{proof}}{\end{proof}}
+\excludecomment{rozwiazanie}
+
+\newenvironment{rbody}%
+{\noindent{\bf Rozwiązanie:}\vskip 0.05cm}%
+{\medskip}
+
+\newenvironment{przyklad}{\noindent{\bf Przykład. }}{~$\square$}
+\newenvironment{uwaga}{{\bf Uwaga. }}{}
+
+\newcommand{\cwiczenia}{
+\ifzrozwiazaniami
+\else
+\setcounter{zad}{1} \pagebreak
+{\noindent \large \bf Zadania} \bigskip
+\fi}
+
+
+
+\newcommand{\spisali}[1]{\vspace{-1,2cm} Spisali: #1
+\vspace{1cm}}
+\newcommand{\spisal}[1]{\vspace{-1,2cm} Spisał: #1
+\vspace{1cm}}
+\newcommand{\spisala}[1]{\vspace{-1,2cm} Spisała: #1
+\vspace{1cm}}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.2mm}}
+
+\newcommand\BackgroundPic{
+\put(0,0){\includegraphics[width=\paperwidth,height=\paperheight]{background.png}}%
+}
+
+\newcommand\okladka{
+
+\newpage
+\thispagestyle{empty}
+\phantom{v}
+\newpage
+}
+
+
+\begin{document}
+\pagestyle{plain}
+\thispagestyle{empty}
+
+\begin{center}
+
+\textsf{\Large Wydział Matematyki, Informatyki i~Mechaniki UW}
+\vskip 2.5cm
+
+\HRule \vskip 0.5cm
+{\Huge \bfseries \textsf{Algebraiczna Teoria Języków}}
+\linebreak \vskip 0.2cm 
+{\large \bfseries \textsf{skrypt z wykładu i ćwiczeń}}
+\vskip 0.1cm
+\HRule \vskip 2.5cm
+
+{\large \textsf{semestr zimowy 2010/2011}}
+\end{center}
+\vfill
+\newpage
+\thispagestyle{empty}
+\begin{center}
+\begin{tabular}[width=\textwidth]{ l l}
+ {Przedmiot prowadzili} & Mikołaj Bojańczyk\\ & Tomasz Idziaszek\\&  Paweł Parys
+    \\ \\
+{Teksty spisali}
+ & Paweł Pasteczka\\
+ & Krzysztof Gogolewski \\
+ & Marcin Kotowski \\
+ & Michał Kotowski \\
+ & Michał Bendowski \\
+ & Katarzyna Krasnowska \\
+ & Michał Żak \\
+ & Dariusz Leniowski \\
+ & Adam Witkowski \\
+ & Michal Jatrzebski \\
+ & Bartosz Lewinski \\
+ & Piotr Leszczyński \\
+ & Maria Donten-Bury \\
+ & Tomasz Kulczyński \\
+ & Tomasz Weksej \\
+ \\ \\
+ {Rozdziały zaakceptowane} & 1, 2, 3
+\end{tabular}
+\end{center}
+\newpage
+
+
+
+\tableofcontents
+
+\chapter{Języki ścieżkowe i logika temporalna}
+\spisali{Tomek Kulczyński i Tomek Weksej}
+
+\input{wyklad12}
+
+\end{document}
+      
