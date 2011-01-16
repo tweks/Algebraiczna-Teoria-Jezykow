@@ -1,0 +1,11 @@
+graph usuniecie_c {
+	node [shape = circle];
+	
+	o0 [label = "a"];
+	m0 [label = "b"];
+	m00 [label = "a"];
+	m01 [label = "a"];
+
+	m0 -- m00;
+	m0 -- m01;
+}

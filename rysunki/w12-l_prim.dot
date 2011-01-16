@@ -1,0 +1,29 @@
+graph lprim {
+	node [shape = circle];
+	
+	subgraph cluster_t1 {
+		a0 [label = "b"];
+		a00 [label = "a"];
+		a000 [label = "c"];
+		a001 [label = "c"];
+		
+		a0 -- a00 -- a000;
+		a00 -- a001;
+		
+		c0 [label = "b"];
+		c00 [label = "a"];
+		c000 [label = "b"];
+		
+		c0 -- c00 -- c000;
+	}
+	
+	subgraph cluster_t2 {
+		b0 [label = "b"];
+		b00 [label = "a"];
+		b000 [label = "c"];
+		b001 [label = "b"];
+		
+		b0 -- b00 -- b000;
+		b00 -- b001;
+	}
+}
