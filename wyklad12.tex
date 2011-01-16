@@ -1,8 +1,11 @@
-\section{Języki pełnościeżkowe}
+\section{Języki pełnościeżkowe}% (fold)
+\label{sec:jezyki_pelnosciezkowe}
+\newcommand{\Elisc}{\ensuremath{\mathrm{E}^{\textrm{liść}}}}
+
 
 \begin{definicja}
 	Język pełnościeżkowy to booleowska kombinacja języków postaci
-	$$\mathrm{E}^{\textrm{liść}}L.$$
+	$$\Elisc L.$$
 \end{definicja}
 
 Sformułujemy teraz twierdzenie analogiczne do \ref{tw:sciezkowe}, charakteryzujące języki pełnościeżkowe poprzez ich algebrę syntaktyczną. Zauważmy najpierw, że twierdzenie w wersji dla języków ścieżkowych to rzeczywiście zbyt mało --- problematyczna jest tu równość $(ii)$: gdy za $g$ podstawimy pusty las otrzymamy:
@@ -47,8 +50,8 @@ Zatrzymajmy się na chwilę nad faktem \ref{fakt:homomorfizm}. Zauważmy, że mo
 	Przedstawimy dwa języki spośród których tylko jeden jest językiem pełnościeżkowym. Oba za to mają taką samą algebrę syntaktyczną.
 	
 	\begin{itemize}
-		\item $L = \textrm{,,istnieje liść $a$''},$ $A = \{a,b\}$,
-		\item $L' = \textrm{,,po usunięciu $c$ istnieje liść $a$''},$ $A = \{a,b,c\}$.
+		\item $L = \textrm{,,istnieje liść $a$''}$, $A = \{a,b\}$,
+		\item $L' = \textrm{,,po usunięciu $c$ istnieje liść $a$''}$, $A = \{a,b,c\}$.
 	\end{itemize}
 	
 	Przez ,,usunięcie $c$'' rozumiemy następującą operację:
@@ -74,13 +77,100 @@ Zatrzymajmy się na chwilę nad faktem \ref{fakt:homomorfizm}. Zauważmy, że mo
 			\includegraphics[scale=0.6]{rysunki/w12-usuniecie_c_2.pdf}
 		\end{minipage}
 	\end{center}
-	
+
 	Oczywiście $L$ jest językiem pełnościeżkowym. Oba te języki mają taką samą algebrę syntaktyczną --- danemu $t' \in L'$ przypisany jest ten sam element algebry co odpowiadającemu mu $t \in L$ (tzn. osiągniętemu przez usunięcie $c$).
-	
-	$L'$ nie jest za to językiem pełnościeżkowym. Rozpatrzmy przedstawione poniżej lasy $t_1$ (po lewej) oraz $t_2$. Odpowiadający im zbiór ścieżek liściowych jest taki sam (a więc jest im przyporządkowany ten sam element algebry syntaktycznej), ale $t_1 \in L'$, a $t_2 \notin L'$.
-	
+
+	$L'$ nie jest za to językiem pełnościeżkowym. Rozpatrzmy przedstawione poniżej lasy $t_1$ (po lewej) oraz $t_2$. Odpowiadający im zbiór ścieżek liściowych jest taki sam, ale $t_1 \in L'$, a $t_2 \notin L'$.
+
 	\begin{center}
 		\includegraphics[scale=0.6]{rysunki/w12-l_prim.pdf}
 	\end{center}
-	
+
 \end{przyklad}
+% section języki_pełnościeżkowe (end)
+
+\section{Logika temporalna} % (fold)
+\label{sec:logika_temporalna}
+
+\newcommand{\LTL}{\ensuremath{\mathtt{LTL}}}
+\newcommand{\CTL}{\ensuremath{\mathtt{CTL}}}
+\newcommand{\CTLS}{\ensuremath{\mathtt{CTL*}}}
+\newcommand{\opA}{\ensuremath{\mathrm{A}}}
+\newcommand{\opE}{\ensuremath{\mathrm{E}}}
+
+\textit{Logika temporalna} to logika na drzewach (nieurangowanych) podobna do $\LTL$. Będziemy rozpatrywać dwa typy tej logiki: $\CTL$ oraz $\CTLS$. Ta ostatnia ,,mniej więcej'' odpowiada $FO$ (co oznacza ,,mniej więcej'' zostanie wyjaśnione na kolejnych wykładach). Ponadto zachodzi
+
+$$\CTL \subsetneq \CTLS.$$
+
+\subsection{Przykłady} % (fold)
+\label{sub:przyklady}
+
+Zanim przystąpimy do definicji, przeanalizujmy kilka przykładów.
+
+\begin{przyklad}
+	$L = \textrm{,,istnieje ścieżka na której występuje $a$''}$ można opisać jako
+
+	$$\opE F^*a.$$
+\end{przyklad}
+
+\begin{przyklad}
+	$L = \textrm{,,istnieje wierzchołek $b$ który ma samych przodków $a$''}$ można opisać jako
+
+	$$\opE b U a.$$
+\end{przyklad}
+
+\begin{przyklad}
+	$L = \textrm{,,po usunięciu $c$ istnieje liść $a$''}$ (język $L'$ z poprzedniego rozdziału) można opisać jako
+
+	$$\opE F^*(a \land \opA XGc).$$
+\end{przyklad}
+
+\begin{przyklad}
+	$L = \textrm{,,istnieje ścieżka liściowa $(ab)^{+}c$''}$ można opisać jako
+
+	$$\opE a \land G(a \Rightarrow Xb) \land G(b \Rightarrow X(a \lor c)) \land G(c \Rightarrow \neg X T).$$
+\end{przyklad}
+
+% subsection przykłady (end)
+
+\subsection{Składnia} % (fold)
+\label{sub:skladnia}
+
+W tym paragrafie sformułujemy formalnie składnię logiki temporalnej.
+
+Zauważmy, że konstruując przykłady korzystaliśmy zarówno ze \textit{zdań ścieżkowych} jak i \textit{zdań wierzchołkowych}. Zdanie ścieżkowe $\varphi \in S$ opisuje własności ścieżek i do jego ewaluacji potrzebujemy mieć dane zarówno las $t$ jak i ścieżkę $\pi = (x,y)$ (gdzie $x,y$ są wierzchołkami w drzewie $t$):
+
+$$t, \pi \models \varphi.$$
+
+Analogicznie, zdanie wierzchołkowe $\varphi \in W$ opisuje własności wierzchołków i do jego ewaluacji potrzebujemy mieć dane zarówno drzewo $t$ jak i wierzchołek $x$:
+
+$$t, x \models \varphi.$$
+
+Do $\CTLS$ należą zarówno zdania ścieżkowe jak i wierzchołkowe:
+
+\begin{eqnarray*}
+	S & \longrightarrow & a\ |\ SUS\ |\ FS\ |\ GS\ |\ XS\ |\ S \lor S\ |\ S \land S\ |\ \neg S\ |\ W \\
+	W & \longrightarrow & \opE S\ |\ W \land W\ |\ W \lor W\ |\ \neg W.
+\end{eqnarray*}
+
+Symbolem startowym jest $S$.
+
+Natomiast do $\CTL$ należą jedynie zdania wierzchołkowe:
+
+\begin{eqnarray*}
+	W & \longrightarrow & a\ |\ W \land W\ |\ W \lor W\ |\ \neg W\ |\ \opE FW\ |\ \opE GW\ |\ \opE XW\ |\ \opE (WUW).
+\end{eqnarray*}
+
+\begin{przyklad}
+	$L = \textrm{,,po usunięciu $c$ istnieje liść $a$''}$ (język $L'$ z poprzedniego rozdziału) można opisać w $\CTL$ (a więc także i w $\CTLS$) jako
+
+	$$\opE F(a \land \neg \opE X (\opE F \neg c)).$$
+\end{przyklad}
+
+\begin{przyklad}
+	$L = \textrm{,,istnieje ścieżka liściowa $(ab)^{+}c$''}$ nie można opisać w $\CTL$.
+\end{przyklad}
+
+% subsection składnia (end)
+
+% section logika_temporalna (end)
